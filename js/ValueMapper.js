@@ -1,4 +1,4 @@
-var NamedFunction, Typle, ValueMapper, Void, assertType, assertTypes, configTypes, defineAll, defineEach, frozen, hidden, isType, reactive, ref, setType;
+var NamedFunction, Typle, ValueMapper, Void, assertType, assertTypes, configTypes, define, defineAll, defineEach, frozen, hidden, isType, reactive, ref, setType;
 
 ref = require("Property"), frozen = ref.frozen, hidden = ref.hidden, reactive = ref.reactive;
 
@@ -51,7 +51,15 @@ module.exports = ValueMapper;
 ValueMapper.presets = {
   mutable: function(obj, key, value) {
     if (value !== void 0) {
-      obj[key] = value;
+      if (key.startsWith("_")) {
+        define(obj, key, {
+          value: value,
+          writable: true,
+          configurable: true
+        });
+      } else {
+        obj[key] = value;
+      }
     }
   },
   frozen: function(obj, key, value) {
@@ -70,17 +78,7 @@ ValueMapper.presets = {
   }
 };
 
-defineAll = function(obj, args) {
-  var key, value, values;
-  values = this._values.apply(obj, args);
-  if (!isType(values, Object)) {
-    throw TypeError("Must return an Object!");
-  }
-  for (key in values) {
-    value = values[key];
-    this._define(obj, key, value);
-  }
-};
+define = Object.defineProperty;
 
 defineEach = function(obj, args) {
   var key, ref1, value;
@@ -94,6 +92,18 @@ defineEach = function(obj, args) {
         value = value.call(obj);
       }
     }
+    this._define(obj, key, value);
+  }
+};
+
+defineAll = function(obj, args) {
+  var key, value, values;
+  values = this._values.apply(obj, args);
+  if (!isType(values, Object)) {
+    throw TypeError("Must return an Object!");
+  }
+  for (key in values) {
+    value = values[key];
     this._define(obj, key, value);
   }
 };

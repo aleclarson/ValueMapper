@@ -38,7 +38,9 @@ ValueMapper.presets =
 
   mutable: (obj, key, value) ->
     if value isnt undefined
-      obj[key] = value
+      if key.startsWith "_"
+        define obj, key, {value, writable: yes, configurable: yes}
+      else obj[key] = value
     return
 
   frozen: (obj, key, value) ->
@@ -55,13 +57,7 @@ ValueMapper.presets =
 # Helpers
 #
 
-defineAll = (obj, args) ->
-  values = @_values.apply obj, args
-  if not isType values, Object
-    throw TypeError "Must return an Object!"
-  for key, value of values
-    @_define obj, key, value
-  return
+define = Object.defineProperty
 
 defineEach = (obj, args) ->
   for key, value of @_values
@@ -69,5 +65,13 @@ defineEach = (obj, args) ->
       if value.length
         value = value.apply obj, args
       else value = value.call obj
+    @_define obj, key, value
+  return
+
+defineAll = (obj, args) ->
+  values = @_values.apply obj, args
+  if not isType values, Object
+    throw TypeError "Must return an Object!"
+  for key, value of values
     @_define obj, key, value
   return
