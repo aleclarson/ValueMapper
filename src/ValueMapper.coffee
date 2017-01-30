@@ -1,11 +1,11 @@
 
 NamedFunction = require "NamedFunction"
 assertType = require "assertType"
+Either = require "Either"
 isType = require "isType"
-Typle = require "Typle"
 
 ValueMapper = NamedFunction "ValueMapper", (values, defineValue) ->
-  assertType values, Typle [Object, Function]
+  assertType values, Either(Object, Function)
   assertType defineValue, Function
   if isType values, Function
   then defineAll values, defineValue

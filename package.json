@@ -10,8 +10,8 @@
     "postinstall": "npm run build"
   },
   "dependencies": {
+    "Either": "aleclarson/Either#1.0.0",
     "NamedFunction": "aleclarson/NamedFunction#2.0.1",
-    "Typle": "aleclarson/Typle#1.0.1",
     "assertType": "aleclarson/assertType#2.0.1",
     "isType": "aleclarson/isType#1.0.1"
   }
