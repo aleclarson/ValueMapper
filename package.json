@@ -1,0 +1,11 @@
+{
+  "name": "ValueMapper",
+  "version": "1.1.2",
+  "main": "js/ValueMapper",
+  "dependencies": {
+    "Either": "aleclarson/Either#1.0.2",
+    "NamedFunction": "aleclarson/NamedFunction#2.0.1",
+    "assertType": "aleclarson/assertType#2.0.2",
+    "isType": "aleclarson/isType#1.0.2"
+  }
+}
